@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\AgeRangeRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -36,6 +38,16 @@ class AgeRange
      * @ORM\Column(type="integer")
      */
     private $nbChildrenByAnimator;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Child::class, mappedBy="ageRange")
+     */
+    private $children;
+
+    public function __construct()
+    {
+        $this->children = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -86,6 +98,36 @@ class AgeRange
     public function setNbChildrenByAnimator(int $nbChildrenByAnimator): self
     {
         $this->nbChildrenByAnimator = $nbChildrenByAnimator;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Child[]
+     */
+    public function getChildren(): Collection
+    {
+        return $this->children;
+    }
+
+    public function addChild(Child $child): self
+    {
+        if (!$this->children->contains($child)) {
+            $this->children[] = $child;
+            $child->setAgeRange($this);
+        }
+
+        return $this;
+    }
+
+    public function removeChild(Child $child): self
+    {
+        if ($this->children->removeElement($child)) {
+            // set the owning side to null (unless already changed)
+            if ($child->getAgeRange() === $this) {
+                $child->setAgeRange(null);
+            }
+        }
 
         return $this;
     }
