@@ -19,6 +19,15 @@ class AgeRangeRepository extends ServiceEntityRepository
         parent::__construct($registry, AgeRange::class);
     }
 
+    public function findAgeRange(int $age)
+    {
+        $qb = $this->createQueryBuilder('a')
+            ->where('a.maxAge >= :age')
+            ->andWhere('a.minAge <= :age')
+            ->setParameter("age", $age);
+
+        return $qb->getQuery()->getSingleResult();
+    }
     // /**
     //  * @return AgeRange[] Returns an array of AgeRange objects
     //  */

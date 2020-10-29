@@ -49,6 +49,12 @@ class Camp
      */
     private $children;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=AgeRange::class, inversedBy="camps")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $ageRange;
+
     public function __construct()
     {
         $this->animators = new ArrayCollection();
@@ -152,6 +158,18 @@ class Camp
     public function removeChild(Child $child): self
     {
         $this->children->removeElement($child);
+
+        return $this;
+    }
+
+    public function getAgeRange(): ?AgeRange
+    {
+        return $this->ageRange;
+    }
+
+    public function setAgeRange(?AgeRange $ageRange): self
+    {
+        $this->ageRange = $ageRange;
 
         return $this;
     }

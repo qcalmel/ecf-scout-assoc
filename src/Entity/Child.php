@@ -2,13 +2,17 @@
 
 namespace App\Entity;
 
+use App\Repository\AgeRangeRepository;
 use App\Repository\ChildRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Persistence\ObjectManager;
 
 /**
  * @ORM\Entity(repositoryClass=ChildRepository::class)
+ * @ORM\HasLifecycleCallbacks()
  */
 class Child
 {
@@ -48,6 +52,7 @@ class Child
     public function __construct()
     {
         $this->camps = new ArrayCollection();
+
     }
 
     public function getId(): ?int
@@ -123,10 +128,22 @@ class Child
         return $this->ageRange;
     }
 
-    public function setAgeRange(?AgeRange $ageRange): self
+    public function setAgeRange(AgeRangeRepository $repository)
     {
+        $age = (new \DateTime())->diff($this->birthDate)->format('%y');
+        $ageRange = $repository->getAgeRange($age);
         $this->ageRange = $ageRange;
+    }
 
-        return $this;
+    /**
+     * @ORM\PrePersist()
+     * @param LifecycleEventArgs $args
+     * @return void
+     */
+    public function prePersistEvents(LifecycleEventArgs $args)
+    {
+        $age = (new \DateTime())->diff($this->birthDate)->format('%y');
+        $ageRange = $args->getEntityManager()->getRepository(AgeRange::class)->findAgeRange($age);
+        $this->ageRange = $ageRange;
     }
 }

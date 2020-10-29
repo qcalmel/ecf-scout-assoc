@@ -49,9 +49,15 @@ class AgeRange
      */
     private $children;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Camp::class, mappedBy="ageRange")
+     */
+    private $camps;
+
     public function __construct()
     {
         $this->children = new ArrayCollection();
+        $this->camps = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -143,6 +149,36 @@ class AgeRange
             // set the owning side to null (unless already changed)
             if ($child->getAgeRange() === $this) {
                 $child->setAgeRange(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Camp[]
+     */
+    public function getCamps(): Collection
+    {
+        return $this->camps;
+    }
+
+    public function addCamp(Camp $camp): self
+    {
+        if (!$this->camps->contains($camp)) {
+            $this->camps[] = $camp;
+            $camp->setAgeRange($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCamp(Camp $camp): self
+    {
+        if ($this->camps->removeElement($camp)) {
+            // set the owning side to null (unless already changed)
+            if ($camp->getAgeRange() === $this) {
+                $camp->setAgeRange(null);
             }
         }
 
