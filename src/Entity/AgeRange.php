@@ -22,7 +22,12 @@ class AgeRange
     /**
      * @ORM\Column(type="string", length=50)
      */
-    private $name;
+    private $singularName;
+
+    /**
+     * @ORM\Column(type="string", length=50)
+     */
+    private $pluralName;
 
     /**
      * @ORM\Column(type="integer")
@@ -54,14 +59,26 @@ class AgeRange
         return $this->id;
     }
 
-    public function getName(): ?string
+    public function getSingularName(): ?string
     {
-        return $this->name;
+        return $this->singularName;
     }
 
-    public function setName(string $name): self
+    public function setSingularName(string $singularName): self
     {
-        $this->name = $name;
+        $this->singularName = $singularName;
+
+        return $this;
+    }
+
+    public function getPluralName(): ?string
+    {
+        return $this->pluralName;
+    }
+
+    public function setPluralName(string $pluralName): self
+    {
+        $this->pluralName = $pluralName;
 
         return $this;
     }
