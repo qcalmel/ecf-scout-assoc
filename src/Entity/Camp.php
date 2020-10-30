@@ -3,7 +3,9 @@
 namespace App\Entity;
 
 use App\Repository\CampRepository;
+use App\Validator\AlreadyAffected;
 use App\Validator\EnoughAnimators;
+use App\Validator\EnoughPlaces;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -33,6 +35,10 @@ class Camp
 
     /**
      * @ORM\Column(type="date")
+     * @Assert\GreaterThan(
+     *     propertyPath="startDate",
+     *     message="La date de fin doit être postérieure à la date de début "
+     * )
      */
     private $endDate;
 
@@ -44,11 +50,13 @@ class Camp
     /**
      * @ORM\ManyToMany(targetEntity=Animator::class, inversedBy="camps")
      * @EnoughAnimators()
+     * @AlreadyAffected()
      */
     private $animators;
 
     /**
      * @ORM\ManyToMany(targetEntity=Child::class, inversedBy="camps")
+     * @EnoughPlaces()
      */
     private $children;
 
@@ -57,6 +65,7 @@ class Camp
      * @ORM\JoinColumn(nullable=false)
      */
     private $ageRange;
+
 
     public function __construct()
     {
@@ -179,5 +188,9 @@ class Camp
 
     public function isEnoughAnimators(){
         return ceil($this->capacity/$this->getAgeRange()->getNbChildrenByAnimator()) ;
+    }
+
+    public function getRemainingPlaces(){
+        return $this->capacity - count($this->children);
     }
 }

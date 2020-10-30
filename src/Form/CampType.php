@@ -16,6 +16,9 @@ class CampType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $entity=$builder->getData();
+        $isAgeRangeModfiable = !($entity->getId());
+        dump($isAgeRangeModfiable);
         $builder
             ->add('name',TextType::class,[
                 'label'=>'Nom du camp'
@@ -32,19 +35,30 @@ class CampType extends AbstractType
             ->add('ageRange',EntityType::class,[
                 'label'=> "Tranche d'age",
                 'class'=>'App\Entity\AgeRange',
-                'choice_label'=>'detailedName'
+                'choice_label'=>'detailedName',
+                'disabled'=>!$isAgeRangeModfiable
             ])
             ->add('animators',EntityType::class,[
                 'label'=> 'Animateurs',
                 'class'=>'App\Entity\Animator',
                 'choice_label'=>'fullName',
-                'multiple'=> true
-            ])
-            ->add('submit', SubmitType::class, [
-                'label' => 'Valider'
-            ])
-
-        ;
+                'multiple'=> true,
+                'required'=>false
+            ]);
+        if($entity->getId() !== null){
+            dump('test');
+            $builder->add('children',EntityType::class,[
+                'label'=>'Enfants Inscrits',
+                'class'=>'App\Entity\Child',
+                'choices'=> $entity->getAgeRange()->getChildren(),
+                'choice_label'=>'fullName',
+                'multiple'=> true,
+                'required'=>false
+            ]);
+        }
+        $builder->add('submit', SubmitType::class, [
+            'label' => 'Valider'
+        ]);
     }
 
     public function configureOptions(OptionsResolver $resolver)

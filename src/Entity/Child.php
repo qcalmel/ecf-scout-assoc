@@ -147,6 +147,13 @@ class Child
         $this->ageRange = $ageRange;
     }
 
+    public function getFullName(): ?string
+    {
+        $fullName = $this->firstName ? $this->firstName." ": "";
+        $fullName .= strtoupper($this->lastName);
+        return $fullName;
+    }
+
     /**
      * @ORM\PrePersist()
      * @param LifecycleEventArgs $args
@@ -155,7 +162,7 @@ class Child
     public function prePersistEvents(LifecycleEventArgs $args)
     {
         $age = (new \DateTime())->diff($this->birthDate)->format('%y');
-//        $ageRange = $args->getEntityManager()->getRepository(AgeRange::class)->findAgeRange($age);
-        $this->firstName = $age;
+        $ageRange = $args->getEntityManager()->getRepository(AgeRange::class)->findAgeRange($age);
+        $this->ageRange = $ageRange;
     }
 }
