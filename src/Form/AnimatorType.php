@@ -4,6 +4,8 @@ namespace App\Form;
 
 use App\Entity\Animator;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -12,9 +14,15 @@ class AnimatorType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('lastName')
-            ->add('firstName')
-            ->add('camps')
+            ->add('lastName', TextType::class,[
+                'label'=>'Nom'
+            ])
+            ->add('firstName', TextType::class,[
+                'label'=>'Prénom'
+            ])
+            ->add('submit', SubmitType::class, [
+                'label' => 'Valider'
+            ])
         ;
     }
 
