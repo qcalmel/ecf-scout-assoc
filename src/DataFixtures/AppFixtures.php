@@ -105,8 +105,8 @@ class AppFixtures extends Fixture
 
         $camp = new Camp();
         $camp->setName('Camps des Louveteaux')
-            ->setCapacity('30')
-            ->setAgeRange($ageRange1)
+            ->setCapacity('20')
+            ->setAgeRange($ageRange2)
             ->setStartDate(new \DateTime('2021-02-01'))
             ->setEndDate(new \DateTime('2021-02-16'))
             ->addAnimator($animators[2]);
@@ -114,8 +114,8 @@ class AppFixtures extends Fixture
 
         $camp = new Camp();
         $camp->setName('Camps des Scouts')
-            ->setCapacity('30')
-            ->setAgeRange($ageRange1)
+            ->setCapacity('25')
+            ->setAgeRange($ageRange3)
             ->setStartDate(new \DateTime('2021-02-01'))
             ->setEndDate(new \DateTime('2021-02-16'))
             ->addAnimator($animators[3]);
@@ -123,8 +123,8 @@ class AppFixtures extends Fixture
 
         $camp = new Camp();
         $camp->setName('Camps des Pionniers')
-            ->setCapacity('30')
-            ->setAgeRange($ageRange1)
+            ->setCapacity('35')
+            ->setAgeRange($ageRange4)
             ->setStartDate(new \DateTime('2021-02-01'))
             ->setEndDate(new \DateTime('2021-02-16'))
             ->addAnimator($animators[4]);
