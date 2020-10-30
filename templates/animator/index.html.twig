@@ -1,20 +1,31 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello AnimatorController!{% endblock %}
+{% block title %}Animateurs{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
+    <div class="col-md-6">
+        <h1>Liste des Animateurs</h1>
+        <table class="table table-striped">
+            <thead class="thead-dark">
+            <tr>
+                <th>Nom</th>
+                <th>Prénom</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
-
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code><a href="{{ 'C:/Users/ultim/Documents/Formation DWWM/Symfony/scout-assoc/src/Controller/AnimatorController.php'|file_link(0) }}">src/Controller/AnimatorController.php</a></code></li>
-        <li>Your template at <code><a href="{{ 'C:/Users/ultim/Documents/Formation DWWM/Symfony/scout-assoc/templates/animator/index.html.twig'|file_link(0) }}">templates/animator/index.html.twig</a></code></li>
-    </ul>
-</div>
+            {% for animator in animatorList %}
+                <tr>
+                    <td>{{ animator.lastName }}</td>
+                    <td>{{ animator.firstName }}</td>
+                    <td>
+                        <a href="{{ path('animator_delete',{'id':animator.id}) }}" class="btn btn-danger">Supprimer</a>
+                        <a href="{{ path('animator_edit',{'id':animator.id}) }}" class="btn btn-warning">Modifier</a>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
 {% endblock %}

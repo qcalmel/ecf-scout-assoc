@@ -1,20 +1,39 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello CampController!{% endblock %}
+{% block title %}Camps{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
+<div class="col-md-6">
+    <h1>Liste des Camps</h1>
+    <table class="table table-striped">
+        <thead class="thead-dark">
+        <tr>
+            <th>Nom</th>
+            <th>Début</th>
+            <th>Fin</th>
+            <th>Places Totales</th>
+            <th>Places Restantes</th>
+            <th>Tranche d'âge</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
-
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code><a href="{{ 'C:/Users/ultim/Documents/Formation DWWM/Symfony/scout-assoc/src/Controller/CampController.php'|file_link(0) }}">src/Controller/CampController.php</a></code></li>
-        <li>Your template at <code><a href="{{ 'C:/Users/ultim/Documents/Formation DWWM/Symfony/scout-assoc/templates/camp/index.html.twig'|file_link(0) }}">templates/camp/index.html.twig</a></code></li>
-    </ul>
+        {% for camp in campList %}
+            <tr>
+                <td>{{ camp.name }}</td>
+                <td>{{ camp.startDate|date('Y-m-d') }}</td>
+                <td>{{ camp.endDate|date('Y-m-d') }}</td>
+                <td>{{ camp.capacity }}</td>
+                <td>{{ camp.remainingPlaces }}</td>
+                <td>{{ camp.ageRange.detailedName }}</td>
+                <td>
+                    <a href="{{ path('camp_delete',{'id':camp.id}) }}" class="btn btn-danger">Supprimer</a>
+                    <a href="{{ path('camp_edit',{'id':camp.id}) }}" class="btn btn-warning">Modifier</a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
 </div>
 {% endblock %}

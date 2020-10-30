@@ -1,10 +1,36 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Ajout Enfant{% endblock %}
+{% block title %}Enfants{% endblock %}
 
 {% block body %}
-    <div class="col-md-4">
-        <h3>Ajouter un enfant</h3>
-        {{ form(childForm) }}
+    <div class="col-md-6">
+        <h1>Liste des Enfants</h1>
+        <table class="table table-striped">
+            <thead class="thead-dark">
+            <tr>
+                <th>Nom</th>
+                <th>Prénom</th>
+                <th>Date de Naissance</th>
+                <th>Tranche d'âge</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+
+            {% for child in childList %}
+                <tr>
+                    <td>{{ child.lastName }}</td>
+                    <td>{{ child.firstName }}</td>
+                    <td>{{ child.birthDate|date('Y-m-d') }}</td>
+                    <td>{{ child.ageRange.singularName }}</td>
+                    <td>
+                        <a href="{{ path('child_delete',{'id':child.id}) }}" class="btn btn-danger">Supprimer</a>
+                        <a href="{{ path('child_edit',{'id':child.id}) }}" class="btn btn-warning">Modifier</a>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
     </div>
 {% endblock %}
+
