@@ -3,9 +3,11 @@
 namespace App\Entity;
 
 use App\Repository\CampRepository;
+use App\Validator\EnoughAnimators;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=CampRepository::class)
@@ -41,6 +43,7 @@ class Camp
 
     /**
      * @ORM\ManyToMany(targetEntity=Animator::class, inversedBy="camps")
+     * @EnoughAnimators()
      */
     private $animators;
 
@@ -172,5 +175,9 @@ class Camp
         $this->ageRange = $ageRange;
 
         return $this;
+    }
+
+    public function isEnoughAnimators(){
+        return ceil($this->capacity/$this->getAgeRange()->getNbChildrenByAnimator()) ;
     }
 }

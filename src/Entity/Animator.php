@@ -94,4 +94,10 @@ class Animator
 
         return $this;
     }
+    public function getFullName(): ?string
+    {
+        $fullName = $this->firstName ? $this->firstName." ": "";
+        $fullName .= strtoupper($this->lastName);
+        return $fullName;
+    }
 }

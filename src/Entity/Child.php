@@ -9,6 +9,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Persistence\ObjectManager;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=ChildRepository::class)
@@ -84,6 +85,17 @@ class Child
         return $this;
     }
 
+    /**
+     * @return \DateTimeInterface|null
+     * @Assert\GreaterThanOrEqual(
+     *     value="-17 years",
+     *     message="L'enfant est trop vieux"
+     * )
+     * @Assert\LessThanOrEqual(
+     *     value="-6 years",
+     *     message="L'enfant est trop jeune"
+     * )
+     */
     public function getBirthDate(): ?\DateTimeInterface
     {
         return $this->birthDate;
@@ -143,7 +155,7 @@ class Child
     public function prePersistEvents(LifecycleEventArgs $args)
     {
         $age = (new \DateTime())->diff($this->birthDate)->format('%y');
-        $ageRange = $args->getEntityManager()->getRepository(AgeRange::class)->findAgeRange($age);
-        $this->ageRange = $ageRange;
+//        $ageRange = $args->getEntityManager()->getRepository(AgeRange::class)->findAgeRange($age);
+        $this->firstName = $age;
     }
 }

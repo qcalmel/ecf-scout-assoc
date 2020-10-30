@@ -184,4 +184,9 @@ class AgeRange
 
         return $this;
     }
+
+    public function getdetailedName() {
+        $detailedName = $this->singularName." ( ".$this->minAge." à ".$this->maxAge." ans)";
+        return $detailedName;
+    }
 }
